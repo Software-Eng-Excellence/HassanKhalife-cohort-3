@@ -1,4 +1,4 @@
-import { IItem, ItemCategory } from "./item.model";
+import { IItem, ItemCategory } from "./interfaces/item.interface";
 
 // Enums for structured values
 export enum CakeType {
