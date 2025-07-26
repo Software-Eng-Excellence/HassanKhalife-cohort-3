@@ -1,0 +1,45 @@
+{
+  "name": "hassankhalife-cohort-3",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000H\u0000a\u0000s\u0000s\u0000a\u0000n\u0000K\u0000h\u0000a\u0000l\u0000i\u0000f\u0000e\u0000-\u0000c\u0000o\u0000h\u0000o\u0000r\u0000t\u0000-\u00003\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint src",
+    "clean": "rm -rf build",
+    "prebuild": "npm run clean && npm run lint",
+    "build": "tsc",
+    "postbuild": "echo \"Finished build\"",
+    "prestart": "npm run build",
+    "start": "node build/index.js",
+    "dev": "ts-node-dev --respawn src/index.ts",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Software-Eng-Excellence/HassanKhalife-cohort-3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Software-Eng-Excellence/HassanKhalife-cohort-3/issues"
+  },
+  "homepage": "https://github.com/Software-Eng-Excellence/HassanKhalife-cohort-3#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "@types/jest": "^30.0.0",
+    "eslint": "^9.31.0",
+    "globals": "^16.3.0",
+    "jest": "^30.0.5",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.37.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.0",
+    "fast-xml-parser": "^5.2.5",
+    "winston": "^3.17.0"
+  }
+}
