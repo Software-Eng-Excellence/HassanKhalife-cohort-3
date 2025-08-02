@@ -1,5 +1,5 @@
-import { CakeBuilder } from '../../../../../src/models/builders/cake.builder';
-import { CakeType, Flavor, FrostingType, DecorationType, PackagingType, Shape } from '../../../../../src/models/cake.model';
+import { CakeBuilder } from '../../src/models/builders/cake.builder';
+import { CakeType, Flavor, FrostingType, DecorationType, PackagingType, Shape } from '../../src/models/cake.model';
 
 describe('CakeBuilder', () => {
     let builder: CakeBuilder;

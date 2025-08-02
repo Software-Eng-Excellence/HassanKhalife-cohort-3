@@ -1,5 +1,5 @@
-import { ToyBuilder } from '../../../../../src/models/builders/toy.builder';
-import { ToyType, AgeGroup, MaterialType } from '../../../../../src/models/toy.model';
+import { ToyBuilder } from '../../src/models/builders/toy.builder';
+import { ToyType, AgeGroup, MaterialType } from '../../src/models/toy.model';
 
 describe('ToyBuilder', () => {
     let builder: ToyBuilder;

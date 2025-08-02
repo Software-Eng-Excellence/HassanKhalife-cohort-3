@@ -1,5 +1,5 @@
-import { BookBuilder } from '../../../../../src/models/builders/book.builder';
-import { BookGenre, BookFormat, Language, PackagingType, SpecialEditionDetails } from '../../../../../src/models/book.model';
+import { BookBuilder } from '../../src/models/builders/book.builder';
+import { BookGenre, BookFormat, Language, PackagingType, SpecialEditionDetails } from '../../src/models/book.model';
 
 describe('BookBuilder', () => {
     let builder: BookBuilder;
