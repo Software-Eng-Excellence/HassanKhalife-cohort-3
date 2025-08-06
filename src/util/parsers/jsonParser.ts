@@ -28,8 +28,8 @@ const parseJSON = (filePath: string): Promise<string[][]> => {
     })
   );
 };
-
-function convertToStringArray(jsonData: any): string[][] {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function convertToStringArray(jsonData: any[]): string[][] {
   const result: string[][] = [];
   
   try {
