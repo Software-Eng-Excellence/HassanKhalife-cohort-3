@@ -1,23 +1,20 @@
-import { 
-    Book, 
-    BookGenre, 
-    BookFormat, 
-    Language, 
-    PackagingType, 
-    SpecialEditionDetails 
+import {
+    Book,
+    BookGenre,
+    BookFormat,
+    Language,
+    PackagingType
 } from '../book.model';
 
 export class BookBuilder {
     private title!: string;
     private author!: string;
-    private genre!: BookGenre;
+    private genre!: BookGenre | string;
     private format: BookFormat | string = BookFormat.PAPERBACK;
     private language: Language | string = Language.ENGLISH;
     private publisher!: string;
-    private specialEdition: SpecialEditionDetails = {
-        isSpecialEdition: false
-    };
-    private packaging: PackagingType = PackagingType.NONE;
+    private specialEdition: string = "None";
+    private packaging: PackagingType | string = PackagingType.NONE;
 
     setTitle(title: string): BookBuilder {
         this.title = title;
@@ -29,7 +26,7 @@ export class BookBuilder {
         return this;
     }
 
-    setGenre(genre: BookGenre): BookBuilder {
+    setGenre(genre: BookGenre | string): BookBuilder {
         this.genre = genre;
         return this;
     }
@@ -49,33 +46,17 @@ export class BookBuilder {
         return this;
     }
 
-    setSpecialEdition(isSpecialEdition: boolean, editionName?: string, extras?: string[]): BookBuilder {
-        this.specialEdition = {
-            isSpecialEdition,
-            editionName,
-            extras: extras ? [...extras] : undefined
-        };
+    setSpecialEdition(specialEdition: string): BookBuilder {
+        this.specialEdition =specialEdition;
         return this;
     }
 
-    setSpecialEditionDetails(details: SpecialEditionDetails): BookBuilder {
-        this.specialEdition = {
-            isSpecialEdition: details.isSpecialEdition,
-            editionName: details.editionName,
-            extras: details.extras ? [...details.extras] : undefined
-        };
+    setSpecialEditionDetails(specialEdition: string): BookBuilder {
+        this.specialEdition = specialEdition
         return this;
     }
 
-    addSpecialEditionExtra(extra: string): BookBuilder {
-        if (!this.specialEdition.extras) {
-            this.specialEdition.extras = [];
-        }
-        this.specialEdition.extras.push(extra);
-        return this;
-    }
-
-    setPackaging(packaging: PackagingType): BookBuilder {
+    setPackaging(packaging: PackagingType | string): BookBuilder {
         this.packaging = packaging;
         return this;
     }

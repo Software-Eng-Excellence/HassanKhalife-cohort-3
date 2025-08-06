@@ -39,7 +39,7 @@ const parseXML = (filePath: string): Promise<string[][]> => {
     })
   );
 };
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function convertToStringArray(data: any): string[][] {
   const result: string[][] = [];
 
@@ -52,6 +52,7 @@ function convertToStringArray(data: any): string[][] {
   const headers = Object.keys(rows[0]);
   result.push(headers);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rows.forEach((row: any) => {
     const rowArray = headers.map(header => {
       const value = row[header];

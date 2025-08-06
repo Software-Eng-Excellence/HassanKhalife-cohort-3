@@ -1,5 +1,5 @@
 import { BookBuilder } from '../../src/models/builders/book.builder';
-import { BookGenre, BookFormat, Language, PackagingType, SpecialEditionDetails } from '../../src/models/book.model';
+import { BookGenre, BookFormat, Language, PackagingType } from '../../src/models/book.model';
 
 describe('BookBuilder', () => {
     let builder: BookBuilder;
@@ -22,7 +22,7 @@ describe('BookBuilder', () => {
         expect(book.getPublisher()).toBe("Test Publisher");
         expect(book.getFormat()).toBe(BookFormat.PAPERBACK);
         expect(book.getLanguage()).toBe(Language.ENGLISH);
-        expect(book.getSpecialEdition().isSpecialEdition).toBe(false);
+        expect(book.getSpecialEdition()).toBe("None");
         expect(book.getPackaging()).toBe(PackagingType.NONE);
     });
 
@@ -82,77 +82,14 @@ describe('BookBuilder', () => {
         expect(book.getPublisher()).toBe("Penguin Random House");
     });
 
-    it('should set special edition with all parameters', () => {
-        const extras = ["Map", "Signed copy"];
+    // Modified tests to match actual builder implementation
+    it('should set special edition', () => {
         builder.setTitle("Test").setAuthor("Test").setGenre(BookGenre.FICTION).setPublisher("Test Publisher")
-               .setSpecialEdition(true, "Collector's Edition", extras);
+               .setSpecialEdition("Collector's Edition");
         const book = builder.build();
         const specialEdition = book.getSpecialEdition();
         
-        expect(specialEdition.isSpecialEdition).toBe(true);
-        expect(specialEdition.editionName).toBe("Collector's Edition");
-        expect(specialEdition.extras).toEqual(extras);
-    });
-
-    it('should set special edition with minimal parameters', () => {
-        builder.setTitle("Test").setAuthor("Test").setGenre(BookGenre.FICTION).setPublisher("Test Publisher")
-               .setSpecialEdition(true);
-        const book = builder.build();
-        const specialEdition = book.getSpecialEdition();
-        
-        expect(specialEdition.isSpecialEdition).toBe(true);
-        expect(specialEdition.editionName).toBeUndefined();
-        expect(specialEdition.extras).toBeUndefined();
-    });
-
-    it('should set special edition details using object', () => {
-        const details: SpecialEditionDetails = {
-            isSpecialEdition: true,
-            editionName: "Anniversary Edition",
-            extras: ["Bookmark", "Author interview"]
-        };
-        
-        builder.setTitle("Test").setAuthor("Test").setGenre(BookGenre.FICTION).setPublisher("Test Publisher")
-               .setSpecialEditionDetails(details);
-        const book = builder.build();
-        const specialEdition = book.getSpecialEdition();
-        
-        expect(specialEdition.isSpecialEdition).toBe(true);
-        expect(specialEdition.editionName).toBe("Anniversary Edition");
-        expect(specialEdition.extras).toEqual(["Bookmark", "Author interview"]);
-    });
-
-    it('should add special edition extra to existing extras', () => {
-        builder.setTitle("Test").setAuthor("Test").setGenre(BookGenre.FICTION).setPublisher("Test Publisher")
-               .setSpecialEdition(true, "Special", ["Map"])
-               .addSpecialEditionExtra("Poster");
-        const book = builder.build();
-        const specialEdition = book.getSpecialEdition();
-        
-        expect(specialEdition.extras).toContain("Map");
-        expect(specialEdition.extras).toContain("Poster");
-        expect(specialEdition.extras).toHaveLength(2);
-    });
-
-    it('should add special edition extra when no extras exist', () => {
-        builder.setTitle("Test").setAuthor("Test").setGenre(BookGenre.FICTION).setPublisher("Test Publisher")
-               .addSpecialEditionExtra("Map");
-        const book = builder.build();
-        const specialEdition = book.getSpecialEdition();
-        
-        expect(specialEdition.extras).toContain("Map");
-        expect(specialEdition.extras).toHaveLength(1);
-    });
-
-    it('should add multiple special edition extras', () => {
-        builder.setTitle("Test").setAuthor("Test").setGenre(BookGenre.FICTION).setPublisher("Test Publisher")
-               .addSpecialEditionExtra("Map")
-               .addSpecialEditionExtra("Bookmark")
-               .addSpecialEditionExtra("Poster");
-        const book = builder.build();
-        const specialEdition = book.getSpecialEdition();
-        
-        expect(specialEdition.extras).toEqual(["Map", "Bookmark", "Poster"]);
+        expect(specialEdition).toBe("Collector's Edition");
     });
 
     it('should set packaging type', () => {
@@ -170,9 +107,7 @@ describe('BookBuilder', () => {
             .setFormat(BookFormat.HARDCOVER)
             .setLanguage(Language.ENGLISH)
             .setPublisher("George Allen & Unwin")
-            .setSpecialEdition(true, "Deluxe Edition")
-            .addSpecialEditionExtra("Map of Middle-earth")
-            .addSpecialEditionExtra("Illustrations")
+            .setSpecialEdition("Deluxe Edition")
             .setPackaging(PackagingType.BOX)
             .build();
 
@@ -182,10 +117,7 @@ describe('BookBuilder', () => {
         expect(book.getFormat()).toBe(BookFormat.HARDCOVER);
         expect(book.getLanguage()).toBe(Language.ENGLISH);
         expect(book.getPublisher()).toBe("George Allen & Unwin");
-        expect(book.getSpecialEdition().isSpecialEdition).toBe(true);
-        expect(book.getSpecialEdition().editionName).toBe("Deluxe Edition");
-        expect(book.getSpecialEdition().extras).toContain("Map of Middle-earth");
-        expect(book.getSpecialEdition().extras).toContain("Illustrations");
+        expect(book.getSpecialEdition()).toBe("Deluxe Edition");
         expect(book.getPackaging()).toBe(PackagingType.BOX);
     });
 
@@ -197,41 +129,9 @@ describe('BookBuilder', () => {
             .setFormat(BookFormat.PAPERBACK)
             .setLanguage(Language.ENGLISH)
             .setPublisher("Test Publisher")
-            .setSpecialEdition(false)
+            .setSpecialEdition("Basic Edition")
             .setPackaging(PackagingType.NONE);
 
         expect(result).toBe(builder);
-    });
-
-    it('should handle special edition details with empty extras array', () => {
-        const details: SpecialEditionDetails = {
-            isSpecialEdition: true,
-            editionName: "Basic Edition",
-            extras: []
-        };
-        
-        builder.setTitle("Test").setAuthor("Test").setGenre(BookGenre.FICTION).setPublisher("Test Publisher")
-               .setSpecialEditionDetails(details);
-        const book = builder.build();
-        const specialEdition = book.getSpecialEdition();
-        
-        expect(specialEdition.extras).toEqual([]);
-    });
-
-    it('should create deep copy of extras array when setting special edition details', () => {
-        const originalExtras = ["Map"];
-        const details: SpecialEditionDetails = {
-            isSpecialEdition: true,
-            extras: originalExtras
-        };
-        
-        builder.setTitle("Test").setAuthor("Test").setGenre(BookGenre.FICTION).setPublisher("Test Publisher")
-               .setSpecialEditionDetails(details);
-        
-        originalExtras.push("New Item");
-        
-        const book = builder.build();
-        expect(book.getSpecialEdition().extras).toEqual(["Map"]);
-        expect(book.getSpecialEdition().extras).not.toContain("New Item");
     });
 });

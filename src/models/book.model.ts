@@ -33,31 +33,26 @@ export enum PackagingType {
     CUSTOM = "custom"
 }
 
-export interface SpecialEditionDetails {
-    isSpecialEdition: boolean;
-    editionName?: string;
-    extras?: string[]; // e.g., maps, signed copy, etc.
-}
 
 export class Book implements IItem {
     private readonly title: string;
     private readonly author: string;
-    private readonly genre: BookGenre;
+    private readonly genre: BookGenre | string;
     private readonly format: BookFormat | string;
     private readonly language: Language | string;
     private readonly publisher: string;
-    private readonly specialEdition: SpecialEditionDetails;
-    private readonly packaging: PackagingType;
+    private readonly specialEdition: string;
+    private readonly packaging: PackagingType | string;
 
     constructor(
         title: string,
         author: string,
-        genre: BookGenre,
+        genre: BookGenre | string,
         format: BookFormat | string,
         language: Language | string,
         publisher: string,
-        specialEdition: SpecialEditionDetails,
-        packaging: PackagingType
+        specialEdition: string,
+        packaging: PackagingType | string
     ) {
         this.title = title;
         this.author = author;
@@ -80,7 +75,7 @@ export class Book implements IItem {
     getAuthor(): string {
         return this.author;
     }
-    getGenre(): BookGenre {
+    getGenre(): BookGenre | string {
         return this.genre;
     }
     getFormat(): BookFormat | string {
@@ -92,10 +87,10 @@ export class Book implements IItem {
     getPublisher(): string {
         return this.publisher;
     }
-    getSpecialEdition(): SpecialEditionDetails {
+    getSpecialEdition(): string {
         return this.specialEdition;
     }
-    getPackaging(): PackagingType {
+    getPackaging(): PackagingType | string {
         return this.packaging;
     }
 }
