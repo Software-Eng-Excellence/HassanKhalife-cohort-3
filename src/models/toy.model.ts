@@ -31,7 +31,7 @@ export enum MaterialType {
 }
 
 export class Toy implements IItem {
-    private readonly type: ToyType;
+    private readonly type: ToyType | string;
     private readonly ageGroup: AgeGroup | string;
     private readonly brand: string;
     private readonly material: MaterialType | string;
@@ -39,7 +39,7 @@ export class Toy implements IItem {
     private readonly educational: boolean;
 
     constructor(
-        type: ToyType,
+        type: ToyType | string,
         ageGroup: AgeGroup | string,
         brand: string,
         material: MaterialType | string,
@@ -59,7 +59,7 @@ export class Toy implements IItem {
     }
 
     // Getters
-    getType(): ToyType {
+    getType(): ToyType | string{
         return this.type;
     }
     getAgeGroup(): AgeGroup | string {

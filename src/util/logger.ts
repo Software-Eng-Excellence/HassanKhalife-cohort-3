@@ -1,14 +1,16 @@
-import winston, { level } from 'winston';
+import winston from 'winston';
 
 const logFileFormat = winston.format.combine(
     winston.format.json(),
     winston.format.timestamp(),
+    winston.format.splat(),
     winston.format.errors({stack: true})
 )
 
 const logConsoleFormat = winston.format.combine(
     winston.format.colorize(),
     winston.format.timestamp({format: "HH:mm:ss"}),
+    winston.format.splat(),
     winston.format.printf(({timestamp,level, message,stack})=>{
         return `[${timestamp}] ${level}: ${message} ${stack || ""}`;
     })

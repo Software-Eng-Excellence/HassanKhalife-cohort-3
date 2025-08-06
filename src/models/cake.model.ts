@@ -46,18 +46,18 @@ export enum Shape {
     CUSTOM = "custom"
 }
 
-interface Decoration {
-    type: DecorationType;
+export interface Decoration {
+    type: DecorationType | string;
     color: string;
 }
 
-interface Frosting {
-    type: FrostingType;
+export interface Frosting {
+    type: FrostingType | string;
     flavor: Flavor | string;
 }
 
 export class Cake implements IItem {
-    private readonly type: CakeType;
+    private readonly type: CakeType | string;
     private readonly flavor: Flavor | string;
     private readonly filling: Flavor | string;
     private readonly size: number;
@@ -65,13 +65,13 @@ export class Cake implements IItem {
     private readonly frosting: Frosting;
     private readonly decoration: Decoration;
     private readonly customMessage: string;
-    private readonly shape: Shape;
-    private readonly allergies: string[];
-    private readonly specialIngredients: string[];
-    private readonly packagingType: PackagingType;
+    private readonly shape: Shape | string;
+    private readonly allergies: string;
+    private readonly specialIngredients: string;
+    private readonly packagingType: PackagingType | string;
 
     constructor(
-        type: CakeType,
+        type: CakeType | string,
         flavor: Flavor | string,
         filling: Flavor | string,
         size: number,
@@ -79,10 +79,10 @@ export class Cake implements IItem {
         frosting: Frosting,
         decoration: Decoration,
         customMessage: string,
-        shape: Shape,
-        allergies: string[],
-        specialIngredients: string[],
-        packagingType: PackagingType
+        shape: Shape | string,
+        allergies: string,
+        specialIngredients: string,
+        packagingType: PackagingType | string
     ) {
         this.type = type;
         this.flavor = flavor;
@@ -103,7 +103,7 @@ export class Cake implements IItem {
     }
 
     // Getters
-    getType(): CakeType {
+    getType(): CakeType | string {
         return this.type;
     }
     getFlavor(): Flavor | string {
@@ -127,16 +127,16 @@ export class Cake implements IItem {
     getCustomMessage(): string {
         return this.customMessage;
     }
-    getShape(): Shape {
+    getShape(): Shape | string {
         return this.shape;
     }
-    getAllergies(): string[] {
+    getAllergies(): string {
         return this.allergies;
     }
-    getSpecialIngredients(): string[] {
+    getSpecialIngredients(): string {
         return this.specialIngredients;
     }
-    getPackagingType(): PackagingType {
+    getPackagingType(): PackagingType | string {
         return this.packagingType;
     }
 }

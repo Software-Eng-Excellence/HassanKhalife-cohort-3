@@ -1,19 +1,19 @@
-import { 
-    Toy, 
-    ToyType, 
-    AgeGroup, 
-    MaterialType 
+import {
+    Toy,
+    ToyType,
+    AgeGroup,
+    MaterialType
 } from '../toy.model';
 
 export class ToyBuilder {
-    private type!: ToyType;
+    private type!: ToyType | string;
     private ageGroup: AgeGroup | string = AgeGroup.ALL_AGES;
     private brand!: string;
     private material!: MaterialType | string;
     private batteryRequired: boolean = false;
     private educational: boolean = false;
 
-    setType(type: ToyType): ToyBuilder {
+    setType(type: ToyType | string): ToyBuilder {
         this.type = type;
         return this;
     }
@@ -48,7 +48,7 @@ export class ToyBuilder {
         if (requiredFields.some(field => !field)) {
             throw new Error("Missing required fields: type, brand, or material.");
         }
-        
+
         return new Toy(
             this.type,
             this.ageGroup,
@@ -58,4 +58,9 @@ export class ToyBuilder {
             this.educational
         );
     }
+
+    static create(): ToyBuilder {
+        return new ToyBuilder();
+    }
+
 }

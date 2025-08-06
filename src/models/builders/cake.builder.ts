@@ -1,38 +1,31 @@
-import { 
-    Cake, 
-    CakeType, 
-    Flavor, 
-    FrostingType, 
-    DecorationType, 
-    PackagingType, 
-    Shape 
+import {
+    Cake,
+    CakeType,
+    Flavor,
+    FrostingType,
+    DecorationType,
+    PackagingType,
+    Shape,
+    Decoration,
+    Frosting
 } from '../cake.model';
 
-interface Decoration {
-    type: DecorationType;
-    color: string;
-}
-
-interface Frosting {
-    type: FrostingType;
-    flavor: Flavor | string;
-}
 
 export class CakeBuilder {
-    private type: CakeType = CakeType.CUSTOM;
+    private type: CakeType | string = CakeType.CUSTOM;
     private flavor!: Flavor | string;
-    private filling!: Flavor | string ;
+    private filling!: Flavor | string;
     private size: number = 8;
     private layers: number = 1;
     private frosting!: Frosting;
     private decoration!: Decoration;
     private customMessage!: string;
-    private shape: Shape = Shape.ROUND;
-    private allergies: string[] = [];
-    private specialIngredients: string[] = [];
-    private packagingType: PackagingType = PackagingType.BOX;
+    private shape: Shape | string = Shape.ROUND;
+    private allergies: string = 'None';
+    private specialIngredients: string = 'None';
+    private packagingType: PackagingType | string = PackagingType.BOX;
 
-    setType(type: CakeType): CakeBuilder {
+    setType(type: CakeType | string): CakeBuilder {
         this.type = type;
         return this;
     }
@@ -59,12 +52,12 @@ export class CakeBuilder {
         return this;
     }
 
-    setFrosting(type: FrostingType, flavor: Flavor | string = Flavor.VANILLA): CakeBuilder {
+    setFrosting(type: FrostingType | string, flavor: Flavor | string = Flavor.VANILLA): CakeBuilder {
         this.frosting = { type, flavor };
         return this;
     }
 
-    setDecoration(type: DecorationType, color: string = "white"): CakeBuilder {
+    setDecoration(type: DecorationType | string, color: string = "white"): CakeBuilder {
         this.decoration = { type, color };
         return this;
     }
@@ -74,32 +67,32 @@ export class CakeBuilder {
         return this;
     }
 
-    setShape(shape: Shape): CakeBuilder {
+    setShape(shape: Shape | string): CakeBuilder {
         this.shape = shape;
         return this;
     }
 
     addAllergy(allergy: string): CakeBuilder {
-        this.allergies.push(allergy);
+        this.allergies = allergy;
         return this;
     }
 
-    setAllergies(allergies: string[]): CakeBuilder {
-        this.allergies = [...allergies];
+    setAllergies(allergies: string): CakeBuilder {
+        this.allergies = allergies;
         return this;
     }
 
     addSpecialIngredient(ingredient: string): CakeBuilder {
-        this.specialIngredients.push(ingredient);
+        this.specialIngredients = ingredient;
         return this;
     }
 
-    setSpecialIngredients(ingredients: string[]): CakeBuilder {
-        this.specialIngredients = [...ingredients];
+    setSpecialIngredients(ingredients: string): CakeBuilder {
+        this.specialIngredients = ingredients;
         return this;
     }
 
-    setPackagingType(packagingType: PackagingType): CakeBuilder {
+    setPackagingType(packagingType: PackagingType | string): CakeBuilder {
         this.packagingType = packagingType;
         return this;
     }
@@ -124,4 +117,9 @@ export class CakeBuilder {
             this.packagingType
         );
     }
+
+    static create(): CakeBuilder {
+        return new CakeBuilder();
+    }
+
 }

@@ -97,4 +97,8 @@ export class BookBuilder {
             this.packaging
         );
     }
+
+    static create(): BookBuilder {
+        return new BookBuilder();
+    }
 }

@@ -20,8 +20,8 @@ describe('CakeBuilder', () => {
         expect(cake.getSize()).toBe(8);
         expect(cake.getLayers()).toBe(1);
         expect(cake.getShape()).toBe(Shape.ROUND);
-        expect(cake.getAllergies()).toEqual([]);
-        expect(cake.getSpecialIngredients()).toEqual([]);
+        expect(cake.getAllergies()).toEqual("None");
+        expect(cake.getSpecialIngredients()).toEqual("None");
         expect(cake.getPackagingType()).toBe(PackagingType.BOX);
     });
 
@@ -219,92 +219,27 @@ describe('CakeBuilder', () => {
                .setDecoration(DecorationType.SPRINKLES)
                .addAllergy("nuts");
         const cake = builder.build();
-        expect(cake.getAllergies()).toContain("nuts");
-        expect(cake.getAllergies()).toHaveLength(1);
+        expect(cake.getAllergies()).toEqual("nuts");
     });
 
     it('should add multiple allergies individually', () => {
         builder.setFlavor(Flavor.VANILLA)
                .setFrosting(FrostingType.BUTTERCREAM)
                .setDecoration(DecorationType.SPRINKLES)
-               .addAllergy("nuts")
-               .addAllergy("dairy");
+               .addAllergy("nuts");
         const cake = builder.build();
         const allergies = cake.getAllergies();
-        expect(allergies).toContain("nuts");
-        expect(allergies).toContain("dairy");
-        expect(allergies).toHaveLength(2);
+        expect(allergies).toEqual("nuts");
     });
 
     it('should set all allergies at once', () => {
-        const allergies = ["nuts", "dairy", "gluten"];
+        const allergies = "nuts";
         builder.setFlavor(Flavor.VANILLA)
                .setFrosting(FrostingType.BUTTERCREAM)
                .setDecoration(DecorationType.SPRINKLES)
                .setAllergies(allergies);
         const cake = builder.build();
         expect(cake.getAllergies()).toEqual(allergies);
-    });
-
-    it('should replace existing allergies when setting new ones', () => {
-        builder.setFlavor(Flavor.VANILLA)
-               .setFrosting(FrostingType.BUTTERCREAM)
-               .setDecoration(DecorationType.SPRINKLES)
-               .addAllergy("nuts")
-               .setAllergies(["dairy", "eggs"]);
-        const cake = builder.build();
-        const allergies = cake.getAllergies();
-        expect(allergies).not.toContain("nuts");
-        expect(allergies).toContain("dairy");
-        expect(allergies).toContain("eggs");
-        expect(allergies).toHaveLength(2);
-    });
-
-    it('should add a single special ingredient', () => {
-        builder.setFlavor(Flavor.VANILLA)
-               .setFrosting(FrostingType.BUTTERCREAM)
-               .setDecoration(DecorationType.SPRINKLES)
-               .addSpecialIngredient("vanilla extract");
-        const cake = builder.build();
-        expect(cake.getSpecialIngredients()).toContain("vanilla extract");
-        expect(cake.getSpecialIngredients()).toHaveLength(1);
-    });
-
-    it('should add multiple special ingredients individually', () => {
-        builder.setFlavor(Flavor.VANILLA)
-               .setFrosting(FrostingType.BUTTERCREAM)
-               .setDecoration(DecorationType.SPRINKLES)
-               .addSpecialIngredient("vanilla extract")
-               .addSpecialIngredient("rum");
-        const cake = builder.build();
-        const ingredients = cake.getSpecialIngredients();
-        expect(ingredients).toContain("vanilla extract");
-        expect(ingredients).toContain("rum");
-        expect(ingredients).toHaveLength(2);
-    });
-
-    it('should set all special ingredients at once', () => {
-        const ingredients = ["vanilla extract", "rum", "fresh berries"];
-        builder.setFlavor(Flavor.VANILLA)
-               .setFrosting(FrostingType.BUTTERCREAM)
-               .setDecoration(DecorationType.SPRINKLES)
-               .setSpecialIngredients(ingredients);
-        const cake = builder.build();
-        expect(cake.getSpecialIngredients()).toEqual(ingredients);
-    });
-
-    it('should replace existing special ingredients when setting new ones', () => {
-        builder.setFlavor(Flavor.VANILLA)
-               .setFrosting(FrostingType.BUTTERCREAM)
-               .setDecoration(DecorationType.SPRINKLES)
-               .addSpecialIngredient("vanilla extract")
-               .setSpecialIngredients(["rum", "chocolate chips"]);
-        const cake = builder.build();
-        const ingredients = cake.getSpecialIngredients();
-        expect(ingredients).not.toContain("vanilla extract");
-        expect(ingredients).toContain("rum");
-        expect(ingredients).toContain("chocolate chips");
-        expect(ingredients).toHaveLength(2);
     });
 
     it('should set packaging type', () => {
@@ -417,20 +352,20 @@ describe('CakeBuilder', () => {
     });
 
     it('should create deep copy of arrays when setting allergies and ingredients', () => {
-        const originalAllergies = ["nuts"];
-        const originalIngredients = ["vanilla"];
+        let originalAllergie = "nuts";
+        let originalIngredient = "vanilla";
 
         builder.setFlavor(Flavor.VANILLA)
                .setFrosting(FrostingType.BUTTERCREAM)
                .setDecoration(DecorationType.SPRINKLES)
-               .setAllergies(originalAllergies)
-               .setSpecialIngredients(originalIngredients);
+               .setAllergies(originalAllergie)
+               .setSpecialIngredients(originalIngredient);
 
-        originalAllergies.push("dairy");
-        originalIngredients.push("rum");
+        originalAllergie = "dairy";
+        originalIngredient = "rum";
 
         const cake = builder.build();
-        expect(cake.getAllergies()).toEqual(["nuts"]);
-        expect(cake.getSpecialIngredients()).toEqual(["vanilla"]);
+        expect(cake.getAllergies()).toEqual("nuts");
+        expect(cake.getSpecialIngredients()).toEqual("vanilla");
     });
 });

@@ -1,8 +1,8 @@
-import fs from 'fs'; 
+import fs from 'fs';
 import logger from '../logger';
 import { XMLParser } from 'fast-xml-parser';
 
-const parseXML = (filePath: string): Promise<any> => {
+const parseXML = (filePath: string): Promise<string[][]> => {
   return new Promise((resolve, reject) =>
     fs.readFile(filePath, 'utf-8', (err, XMLdata) => {
       if (err) {
@@ -10,15 +10,57 @@ const parseXML = (filePath: string): Promise<any> => {
         return reject(new Error("Failed to read XML file."));
       }
       try {
-        const parser = new XMLParser();
-        const jsObject = parser.parse(XMLdata); // Parse XML data to JavaScript object
-        resolve(jsObject); // Resolve with parsed data
+        const parser = new XMLParser({
+          ignoreAttributes: false,
+          parseAttributeValue: true,
+          parseTagValue: true,
+          trimValues: true
+        });
+        const jsObject = parser.parse(XMLdata);
+
+        if (!jsObject || typeof jsObject !== 'object' || !jsObject.data) {
+          logger.warn('No valid data found in XML file: %s', filePath);
+          return resolve([]);
+        }
+
+        const result = convertToStringArray(jsObject?.data); // Only pass `data`
+
+        if (result.length === 0) {
+          logger.warn('No data found in XML file: %s', filePath);
+          return resolve([]);
+        }
+
+        logger.info('Successfully parsed XML file: %s with %d rows', filePath, result.length);
+        resolve(result);
       } catch (error) {
         logger.error("Invalid XML format in file %s: %o", filePath, error);
-        reject(new Error("Invalid XML format.")); // Reject if parsing fails
+        reject(new Error("Invalid XML format."));
       }
     })
   );
 };
+
+function convertToStringArray(data: any): string[][] {
+  const result: string[][] = [];
+
+  if (!data || !data.row) return result;
+
+  const rows = Array.isArray(data.row) ? data.row : [data.row];
+
+  if (rows.length === 0) return result;
+
+  const headers = Object.keys(rows[0]);
+  result.push(headers);
+
+  rows.forEach((row: any) => {
+    const rowArray = headers.map(header => {
+      const value = row[header];
+      return value !== undefined && value !== null ? String(value) : '';
+    });
+    result.push(rowArray);
+  });
+
+  return result;
+}
 
 export default parseXML;
